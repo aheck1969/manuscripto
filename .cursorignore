@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+vendor/
+composer.lock
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+.nuxt/
+.output/
+public/hot
+
+# Cache
+.cache/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+bootstrap/cache/
+
+# Logs
+*.log
+storage/logs/
+
+# Environment files
+.env
+.env.*
+
+# Database
+*.sqlite
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+mariadb_data/
+redis_data/
+meilisearch_data/
+minio_data/
