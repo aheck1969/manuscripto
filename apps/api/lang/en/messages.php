@@ -112,6 +112,17 @@ return [
         'already_have_account' => 'Already have an account?',
         'dont_have_account' => 'Don\'t have an account?',
         'create_account' => 'Create Account',
+        'register_success' => 'Account created successfully',
+        'login_success' => 'Login successful',
+        'login_failed' => 'Invalid credentials',
+        'logout_success' => 'Logged out successfully',
+        'logout_all_success' => 'Logged out from all devices',
+        'profile_updated' => 'Profile updated successfully',
+        'email_already_taken' => 'This email is already registered',
+        'password_confirmation_mismatch' => 'Password confirmation does not match',
+        'invalid_language' => 'Invalid language selected',
+        'writing_goal_too_low' => 'Daily writing goal must be at least 1 word',
+        'writing_goal_too_high' => 'Daily writing goal cannot exceed 10,000 words',
     ],
 
     // API Messages

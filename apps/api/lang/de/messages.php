@@ -112,6 +112,17 @@ return [
         'already_have_account' => 'Hast du bereits ein Konto?',
         'dont_have_account' => 'Hast du noch kein Konto?',
         'create_account' => 'Konto erstellen',
+        'register_success' => 'Konto erfolgreich erstellt',
+        'login_success' => 'Anmeldung erfolgreich',
+        'login_failed' => 'Ungültige Anmeldedaten',
+        'logout_success' => 'Erfolgreich abgemeldet',
+        'logout_all_success' => 'Von allen Geräten abgemeldet',
+        'profile_updated' => 'Profil erfolgreich aktualisiert',
+        'email_already_taken' => 'Diese E-Mail ist bereits registriert',
+        'password_confirmation_mismatch' => 'Passwort-Bestätigung stimmt nicht überein',
+        'invalid_language' => 'Ungültige Sprache ausgewählt',
+        'writing_goal_too_low' => 'Tägliches Schreibziel muss mindestens 1 Wort betragen',
+        'writing_goal_too_high' => 'Tägliches Schreibziel darf 10.000 Wörter nicht überschreiten',
     ],
 
     // API Messages
