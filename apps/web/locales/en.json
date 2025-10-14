@@ -211,7 +211,8 @@
     "name_required": "Name is required",
     "register_success": "Account created successfully! Redirecting...",
     "register_failed": "Registration failed. Please try again.",
-    "login_failed": "Login failed. Please check your credentials."
+    "login_failed": "Login failed. Please check your credentials.",
+    "confirm_logout": "Are you sure you want to logout?"
   },
   "errors": {
     "page_not_found": "Page Not Found",

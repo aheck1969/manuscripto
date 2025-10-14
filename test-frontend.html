@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuscripto - User System Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007cba; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #005a87; }
+        .result { background: #e8f5e8; padding: 15px; border-radius: 4px; margin: 10px 0; white-space: pre-wrap; }
+        .error { background: #ffe8e8; }
+        .success { background: #e8f5e8; }
+        .user-info { background: #e8f0ff; padding: 15px; border-radius: 4px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Manuscripto - User System Test</h1>
+    
+    <div class="container">
+        <h2>🔐 Authentication Test</h2>
+        
+        <!-- Registration Form -->
+        <h3>📝 Registration</h3>
+        <form id="registerForm">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" id="regName" value="Test User" required>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="regEmail" value="test@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="regPassword" value="password123" required>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password:</label>
+                <input type="password" id="regPasswordConfirm" value="password123" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        
+        <div id="registerResult"></div>
+        
+        <!-- Login Form -->
+        <h3>🔑 Login</h3>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="loginEmail" value="test@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="loginPassword" value="password123" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        
+        <div id="loginResult"></div>
+        
+        <!-- User Info -->
+        <div id="userInfo" style="display: none;">
+            <h3>👤 User Info</h3>
+            <div class="user-info" id="userDetails"></div>
+            <button onclick="logout()">Logout</button>
+        </div>
+        
+        <!-- API Test -->
+        <h3>🧪 API Test</h3>
+        <button onclick="testAPI()">Test API Connection</button>
+        <div id="apiResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8888/manuscripto/apps/api/public/api';
+        let authToken = localStorage.getItem('authToken');
+        
+        // Check if user is already logged in
+        if (authToken) {
+            showUserInfo();
+        }
+        
+        // Registration
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const resultDiv = document.getElementById('registerResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById('regName').value,
+                        email: document.getElementById('regEmail').value,
+                        password: document.getElementById('regPassword').value,
+                        password_confirmation: document.getElementById('regPasswordConfirm').value
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="result success">✅ Registration successful!\n\nUser: ${JSON.stringify(data.user, null, 2)}\n\nToken: ${data.token}</div>`;
+                    authToken = data.token;
+                    localStorage.setItem('authToken', authToken);
+                    showUserInfo();
+                } else {
+                    resultDiv.innerHTML = `<div class="result error">❌ Registration failed:\n${JSON.stringify(data, null, 2)}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">❌ Network error: ${error.message}</div>`;
+            }
+        });
+        
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const resultDiv = document.getElementById('loginResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: document.getElementById('loginEmail').value,
+                        password: document.getElementById('loginPassword').value
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="result success">✅ Login successful!\n\nUser: ${JSON.stringify(data.user, null, 2)}</div>`;
+                    authToken = data.token;
+                    localStorage.setItem('authToken', authToken);
+                    showUserInfo();
+                } else {
+                    resultDiv.innerHTML = `<div class="result error">❌ Login failed:\n${JSON.stringify(data, null, 2)}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">❌ Network error: ${error.message}</div>`;
+            }
+        });
+        
+        // Show user info
+        async function showUserInfo() {
+            if (!authToken) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/me`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('userDetails').innerHTML = `
+                        <strong>Name:</strong> ${data.user.name}<br>
+                        <strong>Email:</strong> ${data.user.email}<br>
+                        <strong>Language:</strong> ${data.user.preferred_language}<br>
+                        <strong>Daily Goal:</strong> ${data.user.writing_goal_daily} words<br>
+                        <strong>Created:</strong> ${new Date(data.user.created_at).toLocaleString()}
+                    `;
+                    document.getElementById('userInfo').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        }
+        
+        // Logout
+        function logout() {
+            authToken = null;
+            localStorage.removeItem('authToken');
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('registerResult').innerHTML = '';
+            document.getElementById('loginResult').innerHTML = '';
+        }
+        
+        // Test API
+        async function testAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result">🔗 API Connection: ✅ Working\n\nResponse: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">❌ API Connection failed: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
