@@ -28,12 +28,29 @@ export default defineNuxtConfig({
   // Internationalization
   i18n: {
     locales: [
-      { code: 'de', name: 'Deutsch' },
-      { code: 'en', name: 'English' },
-      { code: 'it', name: 'Italiano' }
+      { code: 'en', name: 'English', file: 'en.json', flag: '🇺🇸' },
+      { code: 'de', name: 'Deutsch', file: 'de.json', flag: '🇩🇪' },
+      { code: 'fr', name: 'Français', file: 'fr.json', flag: '🇫🇷' },
+      { code: 'es', name: 'Español', file: 'es.json', flag: '🇪🇸' },
+      { code: 'it', name: 'Italiano', file: 'it.json', flag: '🇮🇹' },
+      { code: 'pt', name: 'Português', file: 'pt.json', flag: '🇵🇹' },
+      { code: 'nl', name: 'Nederlands', file: 'nl.json', flag: '🇳🇱' },
+      { code: 'pl', name: 'Polski', file: 'pl.json', flag: '🇵🇱' }
     ],
-    defaultLocale: 'de',
-    strategy: 'prefix_except_default'
+    defaultLocale: 'en',
+    strategy: 'prefix_except_default',
+    langDir: 'locales/',
+    lazy: true,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      fallbackLocale: 'en'
+    },
+    compilation: {
+      strictMessage: false
+    }
   },
 
   // Runtime config for API
