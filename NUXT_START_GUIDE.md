@@ -62,5 +62,6 @@ rm -rf .nuxt node_modules/.cache .output
 - ✅ **Routing**: Funktioniert
 - ✅ **Layouts**: Funktioniert
 - ✅ **Styling**: Tailwind CSS mit Design System
-- ✅ **i18n**: Funktioniert (Deutsch, schrittweise erweiterbar)
+- ✅ **i18n**: Funktioniert (Englisch/Deutsch mit Sprachauswahl)
+- ✅ **SPA-Mode**: URL bleibt konstant (wie ChatGPT)
 - ⏳ **Auth**: Später integrieren

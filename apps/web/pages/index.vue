@@ -1,5 +1,10 @@
 <template>
   <div class="px-4 py-6 sm:px-0">
+    <!-- Language Switcher -->
+    <div class="mb-6 flex justify-end">
+      <LanguageSwitcher />
+    </div>
+    
     <div class="border-4 border-dashed border-gray-200 rounded-lg p-8">
       <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('welcome') }}! 🎉</h1>
       <p class="text-lg text-gray-600 mb-6">{{ $t('subtitle') }}</p>

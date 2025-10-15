@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     }
   },
 
+  // SPA Mode - wie ChatGPT (URL bleibt immer gleich)
+  ssr: false,
+
   // Nitro configuration for deployment compatibility
   nitro: {
     compatibilityDate: '2025-10-15'
@@ -36,14 +39,20 @@ export default defineNuxtConfig({
     }
   },
 
-  // i18n configuration - FINAL PATH
+  // i18n configuration - SPA COMPATIBLE
   i18n: {
     locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
       { code: 'de', name: 'Deutsch', file: 'de.json' }
     ],
-    defaultLocale: 'de',
+    defaultLocale: 'en',
     langDir: 'locales/',
-    strategy: 'no_prefix'
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root'
+    }
   },
 
   // App configuration
