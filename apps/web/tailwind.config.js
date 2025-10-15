@@ -10,6 +10,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['Work Sans', 'system-ui', 'sans-serif'],
+        'serif': ['Josefin Slab', 'Georgia', 'serif'],
+        'mono': ['Roboto Mono', 'Monaco', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -44,8 +49,15 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Custom Manuscripto colors
+        dark: "#2b2b2b",       // Main dark color for backgrounds and text
+        'dark-light': "#404040", // Lighter variant for hover states
+        slate: {
+          300: "#cbd5e1",      // Custom slate-300 without blue tint
+        },
       },
       borderRadius: {
+        'xl': '25px',
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",

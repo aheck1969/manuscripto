@@ -1,45 +1,52 @@
 <template>
-  <div class="px-4 py-6 sm:px-0">
-    <!-- Language Switcher -->
-    <div class="mb-6 flex justify-end">
-      <LanguageSwitcher />
+  <div class="min-h-screen flex flex-col bg-dark">
+    <!-- Hero Section -->
+    <div class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center">
+        <h1 class="text-6xl sm:text-7xl lg:text-8xl font-bold text-gray-300 mb-6 font-sans">
+          Manuscripto
+        </h1>
+        <p class="text-xl sm:text-2xl text-white mb-12 font-light font-serif">
+          Built for writers who build worlds.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <button 
+            @click="navigateTo('/auth/login')"
+            class="w-full sm:w-auto bg-white text-primary px-4 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
+          >
+            Anmelden
+          </button>
+          <button 
+            @click="navigateTo('/auth/register')"
+            class="w-full sm:w-auto bg-dark text-white border-2 border-slate-300 px-4 py-2 rounded-full font-medium hover:bg-neutral-900 transition-colors duration-200 cursor-pointer"
+          >
+            Kostenlos registrieren
+          </button>
+        </div>
+      </div>
     </div>
     
-    <div class="border-4 border-dashed border-gray-200 rounded-lg p-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('welcome') }}! 🎉</h1>
-      <p class="text-lg text-gray-600 mb-6">{{ $t('subtitle') }}</p>
-      
-      <div class="space-y-4">
-        <div class="bg-green-50 border border-green-200 rounded-md p-4">
-          <h3 class="text-sm font-medium text-green-800">✅ Frontend (Nuxt)</h3>
-          <p class="text-sm text-green-700">Läuft auf http://localhost:3000</p>
-        </div>
-        
-        <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
-          <h3 class="text-sm font-medium text-blue-800">✅ Backend (Laravel)</h3>
-          <p class="text-sm text-blue-700">Läuft auf http://localhost:8000</p>
-        </div>
-        
-        <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-          <h3 class="text-sm font-medium text-yellow-800">✅ {{ $t('tailwind') }}</h3>
-          <p class="text-sm text-yellow-700">{{ $t('success') }} mit Design System!</p>
-        </div>
-        
-        <div class="bg-purple-50 border border-purple-200 rounded-md p-4">
-          <h3 class="text-sm font-medium text-purple-800">✅ {{ $t('i18n') }}</h3>
-          <p class="text-sm text-purple-700">{{ $t('success') }} - Schritt für Schritt!</p>
-        </div>
-      </div>
-      
-      <!-- Tailwind CSS Test Component -->
-      <div class="mt-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Tailwind CSS Test</h2>
-        <TailwindTest />
-      </div>
-    </div>
+    <!-- Footer -->
+    <footer class="py-8 text-center text-white text-sm">
+      <p>
+        © 2025 by 
+        <a href="mailto:aheck@derheckser.de" class="text-white hover:text-gray-300 transition-colors">
+          Andreas Heck
+        </a>
+        . 
+        <a href="#" class="underline text-white hover:text-gray-300 transition-colors">Nutzungsbedingungen</a>
+        und 
+        <a href="#" class="underline text-white hover:text-gray-300 transition-colors">Datenschutzerklärung</a>
+        .
+      </p>
+    </footer>
   </div>
 </template>
 
 <script setup>
-// Simple dashboard page
+// Landing page - minimalist design
+definePageMeta({
+  layout: false // Use no layout for clean landing page
+})
 </script>
