@@ -1,8 +1,8 @@
 <template>
   <div class="px-4 py-6 sm:px-0">
     <div class="border-4 border-dashed border-gray-200 rounded-lg p-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">Willkommen bei Manuscripto! 🎉</h1>
-      <p class="text-lg text-gray-600 mb-6">Nuxt läuft erfolgreich!</p>
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('welcome') }}! 🎉</h1>
+      <p class="text-lg text-gray-600 mb-6">{{ $t('subtitle') }}</p>
       
       <div class="space-y-4">
         <div class="bg-green-50 border border-green-200 rounded-md p-4">
@@ -16,9 +16,20 @@
         </div>
         
         <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-          <h3 class="text-sm font-medium text-yellow-800">🔧 Nächste Schritte</h3>
-          <p class="text-sm text-yellow-700">i18n, Tailwind CSS und Authentication hinzufügen</p>
+          <h3 class="text-sm font-medium text-yellow-800">✅ {{ $t('tailwind') }}</h3>
+          <p class="text-sm text-yellow-700">{{ $t('success') }} mit Design System!</p>
         </div>
+        
+        <div class="bg-purple-50 border border-purple-200 rounded-md p-4">
+          <h3 class="text-sm font-medium text-purple-800">✅ {{ $t('i18n') }}</h3>
+          <p class="text-sm text-purple-700">{{ $t('success') }} - Schritt für Schritt!</p>
+        </div>
+      </div>
+      
+      <!-- Tailwind CSS Test Component -->
+      <div class="mt-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Tailwind CSS Test</h2>
+        <TailwindTest />
       </div>
     </div>
   </div>

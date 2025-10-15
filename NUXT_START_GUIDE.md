@@ -19,6 +19,12 @@ cd apps/web
 npm run dev
 ```
 
+- Bei Notwendigkeit, den Cache zu löschen:
+
+```bash
+rm -rf .nuxt node_modules/.cache .output
+```
+
 ### **3. Browser öffnen:**
 - **Frontend**: http://localhost:3000
 - **Backend**: http://localhost:8888/manuscripto/apps/api/public/
@@ -38,8 +44,8 @@ npm run dev
 
 ## 📋 **Nächste Schritte:**
 
-1. **Tailwind CSS hinzufügen** (wenn gewünscht)
-2. **i18n wieder einbauen** (schrittweise)
+1. ✅ **Tailwind CSS hinzufügen** - ERFOLGREICH
+2. ✅ **i18n wieder einbauen** - ERFOLGREICH (schrittweise)
 3. **Authentication integrieren**
 4. **Weitere Features**
 
@@ -55,6 +61,6 @@ npm run dev
 - ✅ **Grundfunktionalität**: Läuft
 - ✅ **Routing**: Funktioniert
 - ✅ **Layouts**: Funktioniert
-- ⏳ **Styling**: Basic HTML (Tailwind später)
-- ⏳ **i18n**: Später hinzufügen
+- ✅ **Styling**: Tailwind CSS mit Design System
+- ✅ **i18n**: Funktioniert (Deutsch, schrittweise erweiterbar)
 - ⏳ **Auth**: Später integrieren

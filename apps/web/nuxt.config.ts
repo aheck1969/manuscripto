@@ -1,7 +1,27 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // Development tools
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
+
+  // Nitro configuration for deployment compatibility
+  nitro: {
+    compatibilityDate: '2025-10-15'
+  },
+
+  // CSS framework
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n'
+  ],
+
+  // CSS configuration
+  css: ['~/assets/css/main.css'],
 
   // TypeScript configuration
   typescript: {
@@ -14,6 +34,16 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.API_BASE_URL || 'http://localhost:8888/manuscripto/apps/api/public/api'
     }
+  },
+
+  // i18n configuration - FINAL PATH
+  i18n: {
+    locales: [
+      { code: 'de', name: 'Deutsch', file: 'de.json' }
+    ],
+    defaultLocale: 'de',
+    langDir: 'locales/',
+    strategy: 'no_prefix'
   },
 
   // App configuration
