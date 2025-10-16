@@ -6,7 +6,10 @@
         <!-- Title and Subtitle -->
         <div class="text-center">
           <h1 class="text-4xl sm:text-5xl font-bold text-gray-300 mb-4 font-sans">
-            {{ $t('common.app_name') }}
+            <span class="inline-flex items-center justify-center">
+              <ManuscriptoLogo class="mr-4 h-8 w-auto" />
+              {{ $t('common.app_name') }}
+            </span>
           </h1>
           <p class="text-lg sm:text-xl text-white mb-8 font-light font-serif">
             {{ $t('index.subtitle') }}
@@ -160,20 +163,58 @@ const handleEmailSubmit = async () => {
     loading.value = true
     error.value = ''
     
-    // Use Clerk's email sign-in flow
-    await clerk.value.client.signIn.create({
-      identifier: form.email,
-      strategy: 'email_code'
-    })
-    
-    // Redirect to verification page
-    await router.push('/auth/verify-request')
+    // Check if user exists by trying to create a sign-in
+    try {
+      const signInResult = await clerk.value.client.signIn.create({
+        identifier: form.email
+      })
+      
+      console.log('Sign-in result:', signInResult)
+      
+      // If email link is required, send it
+      if (signInResult.status === 'needs_first_factor') {
+        await signInResult.prepareFirstFactor({
+          strategy: 'email_link',
+          redirectUrl: `${window.location.origin}/sso-callback`
+        })
+        
+        // Redirect to verification page
+        await router.push('/auth/verify-request')
+      }
+      
+    } catch (signInError: any) {
+      console.log('Sign-in failed, trying sign-up:', signInError.message)
+      
+      // If sign-in fails, try sign-up (user doesn't exist yet)
+      const signUpResult = await clerk.value.client.signUp.create({
+        emailAddress: form.email
+      })
+      
+      console.log('Sign-up result:', signUpResult)
+      
+      // If email link is required, send it
+      if (signUpResult.status === 'missing_requirements') {
+        await signUpResult.prepareEmailAddressVerification({
+          strategy: 'email_link',
+          redirectUrl: `${window.location.origin}/sso-callback`
+        })
+        
+        // Redirect to verification page
+        await router.push('/auth/verify-request')
+      }
+    }
     
           } catch (err: any) {
-            console.error('Email sign-in error:', err)
+            console.error('Email authentication error:', err)
+            console.error('Error details:', {
+              message: err.message,
+              errors: err.errors,
+              code: err.errors?.[0]?.code,
+              longMessage: err.errors?.[0]?.longMessage
+            })
             // Map Clerk error codes to our i18n messages
             const errorMessage = mapClerkError(err.errors?.[0]?.code, t)
-            error.value = errorMessage || t('auth.login_failed')
+            error.value = errorMessage || err.errors?.[0]?.longMessage || t('auth.login_failed')
           } finally {
     loading.value = false
   }

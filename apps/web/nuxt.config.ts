@@ -21,13 +21,35 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
-    '@clerk/nuxt'
+    '@clerk/nuxt',
+    ['@vite-pwa/nuxt', {
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Manuscripto',
+        short_name: 'Manu',
+        description: 'Built for writers who build worlds.',
+        theme_color: '#0b0b0b',
+        background_color: '#0b0b0b'
+      },
+      workbox: {
+        navigateFallback: '/'
+      },
+      icon: {
+        source: 'public/icons/favicon.svg',
+        fileName: 'icons/pwa-icon',
+        purpose: 'any maskable'
+      }
+    }]
   ],
 
   // Clerk configuration with German localization
   clerk: {
     publishableKey: process.env.NUXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     // German localization will be set dynamically via the plugin
+    signInUrl: '/auth/login',
+    signUpUrl: '/auth/register',
+    afterSignInUrl: '/',
+    afterSignUpUrl: '/',
   },
 
 
@@ -74,13 +96,28 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Built for writers who build worlds.' }
+        { name: 'description', content: 'Built for writers who build worlds.' },
+        // Open Graph / Twitter for social sharing
+        { property: 'og:title', content: 'Manuscripto' },
+        { property: 'og:description', content: 'Built for writers who build worlds.' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://example.com' },
+        { property: 'og:image', content: '/icons/favicon.svg' },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:title', content: 'Manuscripto' },
+        { name: 'twitter:description', content: 'Built for writers who build worlds.' },
+        { name: 'twitter:image', content: '/icons/favicon.svg' }
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+        // App icons
+        { rel: 'icon', type: 'image/svg+xml', href: '/icons/favicon.svg' },
+        { rel: 'apple-touch-icon', href: '/icons/favicon.svg' },
+        { rel: 'mask-icon', href: '/icons/favicon.svg', color: '#0b0b0b' },
+        { rel: 'manifest', href: '/site.webmanifest' }
       ]
     }
   }

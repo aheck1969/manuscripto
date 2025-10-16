@@ -6,7 +6,10 @@
         <!-- Title and Subtitle -->
         <div>
           <h1 class="text-4xl sm:text-5xl font-bold text-gray-300 mb-4 font-sans">
-            {{ $t('common.app_name') }}
+            <span class="inline-flex items-center justify-center">
+              <ManuscriptoLogo class="mr-4 h-8 w-auto" />
+              {{ $t('common.app_name') }}
+            </span>
           </h1>
           <p class="text-lg sm:text-xl text-white mb-8 font-light font-serif">
             {{ $t('index.subtitle') }}

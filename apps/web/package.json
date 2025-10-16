@@ -13,6 +13,7 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@types/node": "^22.10.2",
+    "@vite-pwa/nuxt": "^1.0.6",
     "nuxt": "^3.19.3",
     "typescript": "^5.9.3"
   },

@@ -4,7 +4,10 @@
     <div class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto text-center">
         <h1 class="text-6xl sm:text-7xl lg:text-8xl font-bold text-gray-300 mb-6 font-sans">
-          {{ $t('index.title') }}
+          <span class="inline-flex items-center justify-center">
+            <ManuscriptoLogo class="mr-4 h-[60px] w-auto" />
+            {{ $t('index.title') }}
+          </span>
         </h1>
         <p class="text-xl sm:text-2xl text-white mb-12 font-light font-serif">
           {{ $t('index.subtitle') }}
