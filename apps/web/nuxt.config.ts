@@ -24,6 +24,12 @@ export default defineNuxtConfig({
     '@clerk/nuxt'
   ],
 
+  // Clerk configuration with German localization
+  clerk: {
+    publishableKey: process.env.NUXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    // German localization will be set dynamically via the plugin
+  },
+
 
 
   // CSS configuration

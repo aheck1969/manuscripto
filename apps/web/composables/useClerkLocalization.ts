@@ -9,23 +9,31 @@ export const useClerkLocalization = () => {
     // Add more locales as needed
   }
   
+  // Function to get the appropriate Clerk localization
+  const getClerkLocalization = (locale: string) => {
+    return clerkLocalizations[locale] || enUS
+  }
+  
   // Function to set Clerk localization based on locale
   const setClerkLocalization = (locale: string) => {
-    const clerkLocale = clerkLocalizations[locale] || enUS
+    const clerkLocale = getClerkLocalization(locale)
     
-    if (process.client) {
-      // Try to access Clerk instance
-      const clerk = useClerk()
-      if (clerk?.value?.load) {
-        clerk.value.load({
-          localization: clerkLocale
-        })
-      }
+    // Set the localization in the global state for Clerk to pick up
+    // This is a cleaner approach than trying to modify the Clerk instance directly
+    if (import.meta.client) {
+      // Store the locale preference for Clerk
+      localStorage.setItem('clerk_locale', locale)
+      
+      // Dispatch a custom event that Clerk can listen to
+      window.dispatchEvent(new CustomEvent('clerk-locale-change', {
+        detail: { locale, clerkLocale }
+      }))
     }
   }
   
   return {
     setClerkLocalization,
+    getClerkLocalization,
     clerkLocalizations
   }
 }
