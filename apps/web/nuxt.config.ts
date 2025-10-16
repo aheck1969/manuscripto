@@ -14,14 +14,17 @@ export default defineNuxtConfig({
 
   // Nitro configuration for deployment compatibility
   nitro: {
-    compatibilityDate: '2025-10-15'
+    compatibilityDate: '2025-10-16'
   },
 
   // CSS framework
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@clerk/nuxt'
   ],
+
+
 
   // CSS configuration
   css: ['~/assets/css/main.css'],
@@ -35,8 +38,10 @@ export default defineNuxtConfig({
   // Runtime config for API
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE_URL || 'http://localhost:8888/manuscripto/apps/api/public/api'
-    }
+      apiBase: process.env.API_BASE_URL || 'http://localhost:8888/manuscripto/apps/api/public/api',
+      clerkPublishableKey: process.env.NUXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+    },
+    clerkSecretKey: process.env.NUXT_CLERK_SECRET_KEY
   },
 
   // i18n configuration - SPA COMPATIBLE
@@ -51,7 +56,8 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      redirectOn: 'root'
+      redirectOn: 'root',
+      fallbackLocale: 'en'
     }
   },
 

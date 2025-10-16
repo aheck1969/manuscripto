@@ -3,5 +3,56 @@
   "subtitle": "Nuxt läuft erfolgreich mit Tailwind CSS!",
   "tailwind": "Tailwind CSS",
   "i18n": "i18n",
-  "success": "Erfolgreich integriert"
+  "success": "Erfolgreich integriert",
+  "index": {
+    "title": "Manuscripto",
+    "subtitle": "Built for writers who build worlds.",
+    "login": "Anmelden",
+    "register": "Kostenlos registrieren"
+  },
+  "footer": {
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzerklärung"
+  },
+  "auth": {
+    "sign_in_or_register": "Anmelden oder registrieren",
+    "continue_with_google": "Mit Google fortsetzen",
+    "continue_with_apple": "Mit Apple fortsetzen",
+    "or": "ODER",
+    "email_address": "E-Mail-Adresse",
+    "next": "Weiter",
+    "sign_in_to_account": "Bei deinem Konto anmelden",
+    "dont_have_account": "Du hast noch kein Konto?",
+    "create_account": "Konto erstellen",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "remember_me": "Angemeldet bleiben",
+    "forgot_password": "Passwort vergessen?",
+    "login": "Anmelden",
+    "email_required": "E-Mail-Adresse ist erforderlich",
+    "password_required": "Passwort ist erforderlich",
+    "login_failed": "Anmeldung fehlgeschlagen",
+    "or_continue_with": "oder fortfahren mit",
+    "google": "Google",
+    "facebook": "Facebook",
+    "check_your_email": "E-Mail prüfen",
+    "verification_sent": "Wir haben dir einen Verifizierungslink gesendet.",
+    "click_link_to_continue": "Klicke auf den Link in der E-Mail, um fortzufahren.",
+    "back_to_login": "Zurück zur Anmeldung",
+    "authenticating": "Authentifizierung läuft...",
+    "please_wait": "Bitte warte, während wir dich anmelden.",
+    "already_have_account": "Du hast bereits ein Konto?",
+    "sign_in": "Anmelden",
+    "registration_failed": "Registrierung fehlgeschlagen",
+    "account_not_found": "Dein Konto konnte nicht gefunden werden",
+    "invalid_credentials": "Ungültige Anmeldedaten",
+    "email_already_exists": "Diese E-Mail-Adresse wird bereits verwendet",
+    "password_too_weak": "Das Passwort ist zu schwach",
+    "verification_failed": "Verifizierung fehlgeschlagen",
+    "session_expired": "Deine Sitzung ist abgelaufen"
+  },
+  "common": {
+    "app_name": "Manuscripto",
+    "loading": "Lädt..."
+  }
 }
