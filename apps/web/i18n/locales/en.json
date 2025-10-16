@@ -1,0 +1,58 @@
+{
+  "welcome": "Welcome to Manuscripto!",
+  "subtitle": "Nuxt is running successfully with Tailwind CSS!",
+  "tailwind": "Tailwind CSS",
+  "i18n": "i18n",
+  "success": "Successfully integrated",
+  "index": {
+    "title": "Manuscripto",
+    "subtitle": "Built for writers who build worlds.",
+    "login": "Login",
+    "register": "Register for free"
+  },
+  "footer": {
+    "terms": "Terms of use",
+    "privacy": "Privacy policy"
+  },
+  "auth": {
+    "sign_in_or_register": "Sign in or register",
+    "continue_with_google": "Continue with Google",
+    "continue_with_apple": "Continue with Apple",
+    "or": "OR",
+    "email_address": "E-mail address",
+    "next": "Next",
+    "sign_in_to_account": "Sign in to your account",
+    "dont_have_account": "Don't have an account?",
+    "create_account": "Create account",
+    "email": "E-mail",
+    "password": "Password",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?",
+    "login": "Sign in",
+    "email_required": "E-mail address is required",
+    "password_required": "Password is required",
+    "login_failed": "Login failed",
+    "or_continue_with": "or continue with",
+    "google": "Google",
+    "facebook": "Facebook",
+    "check_your_email": "Check your email",
+    "verification_sent": "We've sent you a verification link.",
+    "click_link_to_continue": "Click the link in the email to continue.",
+    "back_to_login": "Back to login",
+    "authenticating": "Authenticating...",
+    "please_wait": "Please wait while we sign you in.",
+    "already_have_account": "Already have an account?",
+    "sign_in": "Sign in",
+    "registration_failed": "Registration failed",
+    "account_not_found": "Your account could not be found",
+    "invalid_credentials": "Invalid credentials",
+    "email_already_exists": "This email address is already in use",
+    "password_too_weak": "Password is too weak",
+    "verification_failed": "Verification failed",
+    "session_expired": "Your session has expired"
+  },
+  "common": {
+    "app_name": "Manuscripto",
+    "loading": "Loading..."
+  }
+}
