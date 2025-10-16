@@ -15,10 +15,12 @@
 
         <!-- Verification Message -->
         <div class="bg-white/10 border border-white/20 text-white px-6 py-8 rounded-lg">
-          <div class="text-4xl mb-4">📧</div>
-          <h2 class="text-xl font-medium mb-2">{{ $t('auth.check_your_email') }}</h2>
-          <p class="text-gray-300 mb-4">{{ $t('auth.verification_sent') }}</p>
-          <p class="text-sm text-gray-400">{{ $t('auth.click_link_to_continue') }}</p>
+          <div class="flex justify-center mb-4">
+            <Icon name="mark_email_unread" :size="48" class="text-white/80" />
+          </div>
+          <h2 class="text-xl font-medium mb-2 text-center">{{ $t('auth.check_your_email') }}</h2>
+          <p class="text-gray-300 mb-4 text-center">{{ $t('auth.verification_sent') }}</p>
+          <p class="text-sm text-gray-400 text-center">{{ $t('auth.click_link_to_continue') }}</p>
         </div>
 
         <!-- Back to Login -->
