@@ -85,16 +85,6 @@ onMounted(async () => {
       url: window.location.href
     }
     
-    // Wait for Clerk to process the callback
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // Update debug info
-    debugInfo.value = {
-      status: 'Checking authentication...',
-      isSignedIn: clerk.value.isSignedIn,
-      url: window.location.href
-    }
-    
     // Check if this is an email verification callback
     const urlParams = new URLSearchParams(window.location.search)
     const token = urlParams.get('__clerk_status')
@@ -109,69 +99,84 @@ onMounted(async () => {
       return
     }
     
-    // Check if user is signed in
+    // Handle verified status - this means the email link was clicked
+    if (token === 'verified') {
+      console.log('Email link verification detected')
+      debugInfo.value.status = 'Email verification successful!'
+      
+      // Wait for Clerk to process the verification
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Check if user is now signed in
+      if (clerk.value.isSignedIn) {
+        console.log('User is signed in after verification, redirecting to dashboard')
+        debugInfo.value.status = 'User signed in, redirecting...'
+        await router.push('/')
+        return
+      }
+      
+      // If not signed in, try to complete the sign-up
+      console.log('User not signed in, trying to complete sign-up...')
+      debugInfo.value.status = 'Completing sign-up...'
+      
+      try {
+        // Check if there's a pending sign-up
+        const signUp = clerk.value.client.signUp
+        
+        console.log('Current sign-up status:', signUp?.status)
+        console.log('Current sign-up object:', signUp)
+        
+        if (signUp && signUp.status === 'missing_requirements') {
+          console.log('Found pending sign-up, attempting to complete...')
+          debugInfo.value.status = 'Attempting verification completion...'
+          
+          // For email link verification, we don't need to call attemptEmailAddressVerification
+          // Clerk should handle this automatically when the link is clicked
+          console.log('Email link verification should be automatic')
+          debugInfo.value.status = 'Email verification should be automatic...'
+          
+          // Wait a bit more for Clerk to process
+          await new Promise(resolve => setTimeout(resolve, 3000))
+          
+          // Check again if user is signed in
+          if (clerk.value.isSignedIn) {
+            console.log('User is now signed in after email verification!')
+            debugInfo.value.status = 'User signed in successfully!'
+            await router.push('/')
+            return
+          } else {
+            console.log('User still not signed in after verification')
+            debugInfo.value.status = 'Verification may have failed'
+          }
+        } else {
+          console.log('No pending sign-up found or wrong status:', signUp?.status)
+          debugInfo.value.status = `No pending sign-up (status: ${signUp?.status})`
+        }
+        
+        // If we get here, something went wrong
+        console.log('Redirecting to login due to incomplete verification')
+        await router.push('/auth/login')
+        
+      } catch (completionError: any) {
+        console.error('Sign-up completion failed:', completionError)
+        debugInfo.value.status = `Completion failed: ${completionError.message}`
+        await router.push('/auth/login')
+      }
+      
+      return
+    }
+    
+    // Check if user is signed in (for OAuth callbacks)
     if (clerk.value.isSignedIn) {
       console.log('User is signed in, redirecting to dashboard')
       debugInfo.value.status = 'User signed in, redirecting...'
       await router.push('/')
     } else {
-      console.log('User not signed in, checking for verification')
-      
-      if (token) {
-        console.log('Email verification detected, processing...')
-        debugInfo.value.status = 'Email verification detected...'
-        
-        // Special handling for verified status
-        if (token === 'verified') {
-          console.log('User is verified, checking sign-in status...')
-          debugInfo.value.status = 'User verified, checking sign-in...'
-          
-          // Wait for Clerk to process the verification
-          await new Promise(resolve => setTimeout(resolve, 3000))
-          
-          debugInfo.value = {
-            status: 'Checking sign-in status...',
-            isSignedIn: clerk.value.isSignedIn,
-            url: window.location.href
-          }
-          
-          if (clerk.value.isSignedIn) {
-            console.log('User is signed in, redirecting to dashboard')
-            await router.push('/')
-          } else {
-            console.log('User verified but not signed in, trying to complete sign-up')
-            debugInfo.value.status = 'Completing sign-up...'
-            
-            // For email link verification, we need to reload the page to let Clerk handle it
-            console.log('Reloading page to let Clerk process email link verification...')
-            debugInfo.value.status = 'Reloading for verification...'
-            window.location.reload()
-          }
-        } else {
-          // Wait a bit more for Clerk to process other verification types
-          await new Promise(resolve => setTimeout(resolve, 5000))
-          
-          debugInfo.value = {
-            status: 'Final check...',
-            isSignedIn: clerk.value.isSignedIn,
-            url: window.location.href
-          }
-          
-          if (clerk.value.isSignedIn) {
-            console.log('Verification successful, redirecting to dashboard')
-            await router.push('/')
-          } else {
-            console.log('Verification failed, redirecting to login')
-            await router.push('/auth/login')
-          }
-        }
-      } else {
-        console.log('No verification token, redirecting to login')
-        await router.push('/auth/login')
-      }
+      console.log('User not signed in, redirecting to login')
+      await router.push('/auth/login')
     }
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('SSO callback error:', error)
     debugInfo.value = {
       status: 'Error occurred',

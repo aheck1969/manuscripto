@@ -59,23 +59,32 @@
           </div>
         </div>
 
-        <!-- Email Form -->
+        <!-- Login Form -->
         <form @submit.prevent="handleEmailSubmit" class="space-y-4 flex flex-col items-center">
           <input
             v-model="form.email"
             type="email"
             required
-            class="w-full max-w-[350px] bg-white text-primary px-6 py-3 rounded-full font-normal placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-white/20"
+            class="w-full max-w-[350px] bg-white text-primary px-4 py-3 rounded-full font-medium placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20"
             :placeholder="$t('auth.email_address')"
+            :disabled="loading"
+          />
+          
+          <input
+            v-model="form.password"
+            type="password"
+            required
+            class="w-full max-w-[350px] bg-white text-primary px-4 py-3 rounded-full font-medium placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20"
+            placeholder="Passwort"
             :disabled="loading"
           />
           
           <button
             type="submit"
-            :disabled="loading || !form.email"
+            :disabled="loading || !form.email || !form.password"
             class="w-full max-w-[350px] border border-white/30 text-white px-4 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {{ loading ? $t('common.loading') : $t('auth.next') }}
+            {{ loading ? $t('common.loading') : 'Anmelden' }}
           </button>
         </form>
 
@@ -133,7 +142,8 @@ watchEffect(() => {
 
 // Form state
 const form = reactive({
-  email: ''
+  email: '',
+  password: ''
 })
 
 const loading = ref(false)
@@ -152,10 +162,10 @@ const mapClerkError = (errorCode: string, t: any) => {
   return errorMap[errorCode] || null
 }
 
-// Handle email submission (first step)
+// Handle login submission
 const handleEmailSubmit = async () => {
-  if (!form.email) {
-    error.value = t('auth.email_required')
+  if (!form.email || !form.password) {
+    error.value = 'E-Mail und Passwort sind erforderlich'
     return
   }
   
@@ -163,59 +173,52 @@ const handleEmailSubmit = async () => {
     loading.value = true
     error.value = ''
     
-    // Check if user exists by trying to create a sign-in
-    try {
-      const signInResult = await clerk.value.client.signIn.create({
-        identifier: form.email
-      })
-      
-      console.log('Sign-in result:', signInResult)
-      
-      // If email link is required, send it
-      if (signInResult.status === 'needs_first_factor') {
-        await signInResult.prepareFirstFactor({
-          strategy: 'email_link',
-          redirectUrl: `${window.location.origin}/sso-callback`
-        })
-        
-        // Redirect to verification page
-        await router.push('/auth/verify-request')
-      }
-      
-    } catch (signInError: any) {
-      console.log('Sign-in failed, trying sign-up:', signInError.message)
-      
-      // If sign-in fails, try sign-up (user doesn't exist yet)
-      const signUpResult = await clerk.value.client.signUp.create({
-        emailAddress: form.email
-      })
-      
-      console.log('Sign-up result:', signUpResult)
-      
-      // If email link is required, send it
-      if (signUpResult.status === 'missing_requirements') {
-        await signUpResult.prepareEmailAddressVerification({
-          strategy: 'email_link',
-          redirectUrl: `${window.location.origin}/sso-callback`
-        })
-        
-        // Redirect to verification page
-        await router.push('/auth/verify-request')
-      }
+    // Try to sign in with email and password
+    console.log('Attempting sign-in with:', {
+      email: form.email,
+      emailLength: form.email.length,
+      emailValid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
+    })
+    
+    const signInResult = await clerk.value.client.signIn.create({
+      identifier: form.email,
+      password: form.password
+    })
+    
+    console.log('Sign-in result:', signInResult)
+    
+    // If sign-in is complete, redirect to dashboard
+    if (signInResult.status === 'complete') {
+      console.log('Sign-in successful, redirecting to dashboard')
+      // Use window.location.href for a full page reload to ensure Clerk state is updated
+      window.location.href = '/'
+    } else {
+      console.log('Sign-in incomplete, status:', signInResult.status)
+      error.value = 'Anmeldung fehlgeschlagen'
     }
     
-          } catch (err: any) {
-            console.error('Email authentication error:', err)
-            console.error('Error details:', {
-              message: err.message,
-              errors: err.errors,
-              code: err.errors?.[0]?.code,
-              longMessage: err.errors?.[0]?.longMessage
-            })
-            // Map Clerk error codes to our i18n messages
-            const errorMessage = mapClerkError(err.errors?.[0]?.code, t)
-            error.value = errorMessage || err.errors?.[0]?.longMessage || t('auth.login_failed')
-          } finally {
+  } catch (err: any) {
+    console.error('Login error:', err)
+    console.error('Error details:', {
+      message: err.message,
+      errors: err.errors,
+      code: err.errors?.[0]?.code,
+      longMessage: err.errors?.[0]?.longMessage
+    })
+    
+    // Check if the error is because the email doesn't exist
+    if (err.errors?.[0]?.code === 'form_identifier_not_found') {
+      console.log('User does not exist, redirecting to register')
+      error.value = t('auth.account_not_found')
+      // Redirect to register page
+      await router.push('/auth/register')
+      return
+    }
+    
+    // For other errors, show the error
+    const errorMessage = mapClerkError(err.errors?.[0]?.code, t)
+    error.value = errorMessage || err.errors?.[0]?.longMessage || t('auth.login_failed')
+  } finally {
     loading.value = false
   }
 }

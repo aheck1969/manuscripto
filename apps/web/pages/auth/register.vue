@@ -59,8 +59,25 @@
           </div>
         </div>
 
-        <!-- Email Form -->
+        <!-- Registration Form -->
         <form @submit.prevent="handleEmailSubmit" class="space-y-4 flex flex-col items-center">
+          <input
+            v-model="form.firstName"
+            type="text"
+            required
+            class="w-full max-w-[350px] bg-white text-primary px-4 py-3 rounded-full font-medium placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20"
+            placeholder="Vorname"
+            :disabled="loading"
+          />
+          
+          <input
+            v-model="form.lastName"
+            type="text"
+            class="w-full max-w-[350px] bg-white text-primary px-4 py-3 rounded-full font-medium placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20"
+            placeholder="Nachname (optional)"
+            :disabled="loading"
+          />
+          
           <input
             v-model="form.email"
             type="email"
@@ -70,12 +87,21 @@
             :disabled="loading"
           />
           
+          <input
+            v-model="form.password"
+            type="password"
+            required
+            class="w-full max-w-[350px] bg-white text-primary px-4 py-3 rounded-full font-medium placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20"
+            placeholder="Passwort"
+            :disabled="loading"
+          />
+          
           <button
             type="submit"
-            :disabled="loading || !form.email"
+            :disabled="loading || !form.email || !form.firstName || !form.password"
             class="w-full max-w-[350px] border border-white/30 text-white px-4 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {{ loading ? $t('common.loading') : $t('auth.next') }}
+            {{ loading ? $t('common.loading') : 'Konto erstellen' }}
           </button>
         </form>
 
@@ -133,7 +159,10 @@ watchEffect(() => {
 
 // Form state
 const form = reactive({
-  email: ''
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: ''
 })
 
 const loading = ref(false)
@@ -152,10 +181,10 @@ const mapClerkError = (errorCode: string, t: any) => {
   return errorMap[errorCode] || null
 }
 
-// Handle email submission (first step)
+// Handle registration submission
 const handleEmailSubmit = async () => {
-  if (!form.email) {
-    error.value = t('auth.email_required')
+  if (!form.email || !form.firstName || !form.password) {
+    error.value = 'Vorname, E-Mail und Passwort sind erforderlich'
     return
   }
   
@@ -163,9 +192,12 @@ const handleEmailSubmit = async () => {
     loading.value = true
     error.value = ''
     
-    // Use Clerk's standard sign-up with email link
+    // Use Clerk's standard sign-up with all required fields
     const signUpResult = await clerk.value.client.signUp.create({
-      emailAddress: form.email
+      emailAddress: form.email,
+      firstName: form.firstName,
+      lastName: form.lastName,
+      password: form.password
     })
     
     console.log('Sign-up result:', signUpResult)
